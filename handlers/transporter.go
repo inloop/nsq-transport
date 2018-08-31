@@ -17,8 +17,7 @@ type NSQTransporterMessage struct {
 // GetText get string templated string
 func (m *NSQTransporterMessage) GetString(tmpl string) string {
 	var tpl bytes.Buffer
-	_tmpl := template.Must(template.New(tmpl).Parse(tmpl))
-	_tmpl.Delims("[[", "]]")
+	_tmpl := template.Must(template.New(tmpl).Delims("[[", "]]").Parse(tmpl))
 	_tmpl.Execute(&tpl, m.DecodedMessage)
 	return tpl.String()
 }
