@@ -20,7 +20,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "topic,t",
-			EnvVar: "NSQ_CHANNEL",
+			EnvVar: "NSQ_TOPIC",
 			Usage:  "NSQ topic name to consume",
 		},
 		cli.StringFlag{
