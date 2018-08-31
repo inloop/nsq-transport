@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
+	"strings"
 
 	nsq "github.com/bitly/go-nsq"
 )
@@ -14,12 +15,13 @@ type NSQTransporterMessage struct {
 	DecodedMessage *interface{}
 }
 
-// GetText get string templated string
+// GetString get string templated string
 func (m *NSQTransporterMessage) GetString(tmpl string) string {
 	var tpl bytes.Buffer
 	_tmpl := template.Must(template.New(tmpl).Delims("[[", "]]").Parse(tmpl))
 	_tmpl.Execute(&tpl, m.DecodedMessage)
-	return tpl.String()
+	str := tpl.String()
+	return strings.Replace(str, "\\n", "\n", -1)
 }
 
 // NSQTransporterHandler ...
