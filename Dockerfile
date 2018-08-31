@@ -6,7 +6,7 @@ COPY . /go/src/github.com/inloop/nsq-transport
 RUN go get ./...
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 
-FROM golang:alpine
+FROM alpine
 
 WORKDIR /root/
 COPY --from=0 /go/src/github.com/inloop/nsq-transport/app /usr/local/bin/nsq-transport
