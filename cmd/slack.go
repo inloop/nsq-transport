@@ -35,7 +35,6 @@ func SlackCommand() cli.Command {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			fmt.Println("slack command")
 
 			channel := c.String("channel")
 			text := c.String("text")

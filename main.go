@@ -48,6 +48,7 @@ func main() {
 
 	app.Commands = []cli.Command{
 		cmd.SlackCommand(),
+		cmd.SMTPCommand(),
 	}
 
 	app.Run(os.Args)
