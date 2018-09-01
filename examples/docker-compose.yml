@@ -1,0 +1,55 @@
+version: '2'
+services:
+  nsqd:
+    image: nsqio/nsq
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
+    depends_on:
+      - nsqlookupd
+    # ports:
+    #   - 4150:4150
+    #   - 4151:4151
+  nsqlookupd:
+    image: nsqio/nsq
+    command: /nsqlookupd
+    # ports:
+    #   - 4160:4160
+    #   - 4161:4161
+  nsqadmin:
+    image: nsqio/nsq
+    command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
+    depends_on:
+      - nsqlookupd
+      - core/internet_lb
+    ports:
+      - 4171:4171
+  nsq2slack:
+    image: inloopx/nsq-transport
+    command: nsq-transport slack
+    links:
+      - nsqlookupd
+      - nsqd
+    environment:
+      - NSQ_TOPIC=some-topic
+      - NSQ_CHANNEL=nsq2slack
+      - NSQ_LOOKUPD=nsqlookupd:4161
+      - SLACK_CHANNEL=#nsq-transport-test
+      - SLACK_URL=...
+      - "SLACK_TEXT=new message \ncontent:[[.]]"
+      - SLACK_USERNAME=nsq-transport
+  nsq2smtp:
+    image: inloopx/nsq-transport
+    command: nsq-transport smtp
+    links:
+      - nsqlookupd
+      - nsqd
+    environment:
+      - NSQ_TOPIC=some-topic
+      - NSQ_CHANNEL=nsq2smtp
+      - NSQ_LOOKUPD=nsqlookupd:4161
+      - SMTP_URL=...
+      - SMTP_SENDER=no-reply@example.com
+      - SMTP_FROM=johny@example.com
+      - SMTP_SUBJECT=New message in NSQ
+      - SMTP_TO=john.doe@example.com
+      - SMTP_BODY_TEXT=new [[.]]
+      - SMTP_BODY_HTML=new [[.]]
