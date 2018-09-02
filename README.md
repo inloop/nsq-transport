@@ -15,10 +15,10 @@ Each application setup NSQ consumer for specific topic with given channel. You c
 You can run application directly:
 
 ```
-# install binary
+# install binary (macos/linux)
 GOBIN=/usr/local/bin/ go install github.com/inloop/nsq-transport
 
-# run SMTP with transport
+# run with SMTP transport
 nsq-transport -t some-topic -c my-smtp-transporter --lookup hostname:4161 smtp --sender john.doe@example.com --body-text "Hello, new message was just created" --body-html "test [[.entity]]" --to blah@example.com --subject "transport test" --url smtp://user:pass@hostname
 ```
 
